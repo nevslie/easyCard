@@ -1,0 +1,12 @@
+{
+  "name": "Englisch Beispiel",
+  "description": "Beispielstapel – die KI muss nur front/back (+ optional example, notes, tags) schreiben.",
+  "frontLabel": "Englisch",
+  "backLabel": "Deutsch",
+  "directions": "both",
+  "cards": [
+    { "front": "to persuade", "back": "überzeugen", "example": "She persuaded him to come along.", "tags": ["verben"] },
+    { "front": "reliable", "back": "zuverlässig", "example": "He is a very reliable friend." },
+    { "front": "to take sth for granted", "back": "etw. als selbstverständlich ansehen", "notes": "Redewendung", "tags": ["phrases"] }
+  ]
+}

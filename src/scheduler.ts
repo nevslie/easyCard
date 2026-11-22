@@ -66,3 +66,26 @@ export function formatInterval(days: number): string {
 export function isDue(p: Progress, now = new Date()): boolean {
 	return p.due !== null && new Date(p.due).getTime() <= now.getTime();
 }
+
+/** Ganze Tage bis zur Fälligkeit (0 = heute oder überfällig). null = Karte ist neu. */
+export function daysUntilDue(p: Progress, now = new Date()): number | null {
+	if (p.state === "new" || !p.due) return null;
+	const diff = startOfDay(new Date(p.due)).getTime() - startOfDay(now).getTime();
+	return Math.max(0, Math.round(diff / DAY_MS));
+}
+
+/**
+ * Fälligkeit manuell setzen (beim Bearbeiten einer Karte).
+ * Bei gelernten Karten ändert sich nur `due`, Intervall und Ease bleiben gleich.
+ * Eine neue Karte gilt danach als gelernt, mit den gesetzten Tagen als Intervall.
+ */
+export function setDueInDays(p: Progress, days: number, now = new Date()): Progress {
+	const d = Math.max(0, Math.round(days));
+	const next: Progress = { ...p };
+	next.due = new Date(startOfDay(now).getTime() + d * DAY_MS).toISOString();
+	if (p.state === "new") {
+		next.state = "review";
+		next.interval = Math.max(1, d);
+	}
+	return next;
+}

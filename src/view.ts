@@ -1,15 +1,17 @@
 import { Menu, Notice, TextFileView, WorkspaceLeaf, setIcon } from "obsidian";
 import {
 	Card,
+	DIRECTIONS,
 	Deck,
 	Direction,
 	DirectionSetting,
 	Rating,
 	createCard,
+	newProgress,
 	parseDeck,
 	serializeDeck,
 } from "./deck";
-import { formatInterval, isDue, nextInterval, schedule } from "./scheduler";
+import { formatInterval, isDue, nextInterval, schedule, setDueInDays } from "./scheduler";
 import { CardInput, CardModal, JsonModal } from "./modals";
 
 export const VIEW_TYPE_DECK = "easycard-deck-view";
@@ -139,7 +141,14 @@ export class DeckView extends TextFileView {
 			this.deck,
 			(input: CardInput) => {
 				if (!this.deck) return;
-				if (existing) Object.assign(existing, cleanInput(input));
+				if (existing) {
+					Object.assign(existing, cleanInput(input));
+					for (const dir of DIRECTIONS) {
+						const d = input.dueDays?.[dir];
+						if (d === null) existing.progress[dir] = newProgress();
+						else if (d !== undefined) existing.progress[dir] = setDueInDays(existing.progress[dir], d);
+					}
+				}
 				else this.deck.cards.push(createCard(cleanInput(input)));
 				this.persist();
 				this.render();

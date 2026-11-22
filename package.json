@@ -1,5 +1,5 @@
 {
-  "name": "vocab-decks",
+  "name": "easycard",
   "version": "0.1.0",
   "description": "Anki-inspirierte Vokabel-Stapel als .deck-Dateien in Obsidian",
   "main": "main.js",
@@ -7,7 +7,6 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
   },
-  "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.0",
     "builtin-modules": "3.3.0",
@@ -15,5 +14,10 @@
     "obsidian": "latest",
     "tslib": "2.6.2",
     "typescript": "5.4.5"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevslie/easyCard.git"
   }
 }

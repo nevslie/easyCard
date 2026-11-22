@@ -1,4 +1,4 @@
-# Vocab Decks
+# easyCard
 
 Obsidian-Plugin zum Vokabellernen, angelehnt an Anki. Jeder Stapel ist eine `.deck`-Datei (reines JSON) im Vault. Beim Anklicken öffnet sich statt des JSON eine Lernoberfläche.
 
@@ -26,6 +26,6 @@ npm install
 npm run build
 ```
 
-Danach `main.js`, `manifest.json` und `styles.css` nach `<Vault>/.obsidian/plugins/vocab-decks/` kopieren und das Plugin unter *Einstellungen → Community-Plugins* aktivieren.
+Danach `main.js`, `manifest.json` und `styles.css` nach `<Vault>/.obsidian/plugins/easycard/` kopieren und das Plugin unter *Einstellungen → Community-Plugins* aktivieren.
 
 Für die Entwicklung: `npm run dev` baut bei jeder Änderung neu.

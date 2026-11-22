@@ -12,7 +12,7 @@ import {
 import { formatInterval, isDue, nextInterval, schedule } from "./scheduler";
 import { CardInput, CardModal, JsonModal } from "./modals";
 
-export const VIEW_TYPE_DECK = "vocab-deck-view";
+export const VIEW_TYPE_DECK = "easycard-deck-view";
 
 interface QueueItem {
 	cardId: string;

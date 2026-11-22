@@ -1,9 +1,9 @@
 {
-  "id": "vocab-decks",
-  "name": "Vocab Decks",
+  "id": "easycard",
+  "name": "easyCard",
   "version": "0.1.0",
   "minAppVersion": "1.4.0",
   "description": "Vokabeln lernen mit Stapeln als .deck-Dateien (JSON), angelehnt an Anki.",
-  "author": "",
+  "author": "nevslie",
   "isDesktopOnly": false
 }

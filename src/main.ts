@@ -3,7 +3,7 @@ import { DeckView, VIEW_TYPE_DECK } from "./view";
 import { createDeck, serializeDeck } from "./deck";
 import { PromptModal } from "./modals";
 
-export default class VocabDecksPlugin extends Plugin {
+export default class EasyCardPlugin extends Plugin {
 	async onload() {
 		this.registerView(VIEW_TYPE_DECK, (leaf) => new DeckView(leaf));
 		this.registerExtensions(["deck"], VIEW_TYPE_DECK);

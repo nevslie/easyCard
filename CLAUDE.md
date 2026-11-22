@@ -1,4 +1,4 @@
-# Vocab Decks – Obsidian-Plugin
+# easyCard – Obsidian-Plugin
 
 Vokabel-Stapel als `.deck`-Dateien (JSON), Lernoberfläche angelehnt an Anki.
 

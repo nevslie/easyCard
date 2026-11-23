@@ -54,3 +54,7 @@
   .vocab-stats { grid-template-columns: repeat(2, 1fr); }
   .vocab-row-info { display: none; }
 }
+
+/* Fälligkeit im Bearbeiten-Dialog */
+.vocab-due-heading { margin: 16px 0 4px; }
+.vocab-due-input { width: 64px; text-align: center; }

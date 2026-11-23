@@ -33,7 +33,7 @@
 .vocab-card-question { font-size: 1.8em; font-weight: 600; }
 .vocab-card-answer { font-size: 1.5em; color: var(--text-accent); }
 .vocab-card-example { margin-top: 16px; font-style: italic; }
-.vocab-card-notes { margin-top: 8px; font-size: 0.9em; white-space: pre-wrap; }
+.vocab-card-notes { margin-top: 8px; font-size: 0.9em; }
 .vocab-study-footer { margin-top: 20px; display: flex; justify-content: center; }
 .vocab-reveal { min-width: 220px; }
 .vocab-ratings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
@@ -60,3 +60,12 @@
 .vocab-mark.is-marked, .vocab-mark-filter.is-active { color: var(--color-yellow); }
 .vocab-mark.is-marked svg { fill: currentColor; }
 .vocab-study-top > .vocab-muted { flex: 1; text-align: center; }
+/* Markdown/HTML in Karten */
+.vocab-md > :first-child { margin-top: 0; }
+.vocab-md > :last-child { margin-bottom: 0; }
+.vocab-md p { margin: 0.3em 0; }
+.vocab-card-question.vocab-md, .vocab-card-answer.vocab-md { line-height: 1.3; }
+.vocab-md img { max-width: 100%; max-height: 300px; }
+/* Fälligkeit im Bearbeiten-Dialog */
+.vocab-due-heading { margin: 16px 0 4px; }
+.vocab-due-input { width: 64px; text-align: center; }

@@ -1,15 +1,17 @@
-import { Menu, Notice, TextFileView, WorkspaceLeaf, setIcon } from "obsidian";
+import { MarkdownRenderer, Menu, Notice, TextFileView, WorkspaceLeaf, setIcon } from "obsidian";
 import {
 	Card,
+	DIRECTIONS,
 	Deck,
 	Direction,
 	DirectionSetting,
 	Rating,
 	createCard,
+	newProgress,
 	parseDeck,
 	serializeDeck,
 } from "./deck";
-import { formatInterval, isDue, nextInterval, schedule } from "./scheduler";
+import { formatInterval, isDue, nextInterval, schedule, setDueInDays } from "./scheduler";
 import { CardInput, CardModal, JsonModal } from "./modals";
 
 export const VIEW_TYPE_DECK = "easycard-deck-view";
@@ -140,7 +142,14 @@ export class DeckView extends TextFileView {
 			this.deck,
 			(input: CardInput) => {
 				if (!this.deck) return;
-				if (existing) Object.assign(existing, cleanInput(input));
+				if (existing) {
+					Object.assign(existing, cleanInput(input));
+					for (const dir of DIRECTIONS) {
+						const d = input.dueDays?.[dir];
+						if (d === null) existing.progress[dir] = newProgress();
+						else if (d !== undefined) existing.progress[dir] = setDueInDays(existing.progress[dir], d);
+					}
+				}
 				else this.deck.cards.push(createCard(cleanInput(input)));
 				this.persist();
 				this.render();
@@ -393,7 +402,7 @@ export class DeckView extends TextFileView {
 			text: forward ? `${deck.frontLabel} → ${deck.backLabel}` : `${deck.backLabel} → ${deck.frontLabel}`,
 			cls: "vocab-card-dir vocab-muted",
 		});
-		box.createDiv({ text: question, cls: "vocab-card-question" });
+		this.renderMarkdown(box, question, "vocab-card-question");
 
 		const footer = wrap.createDiv({ cls: "vocab-study-footer" });
 		this.markButton(top, card);
@@ -408,9 +417,9 @@ export class DeckView extends TextFileView {
 		}
 
 		box.createEl("hr");
-		box.createDiv({ text: answer, cls: "vocab-card-answer" });
-		if (card.example) box.createDiv({ text: card.example, cls: "vocab-card-example" });
-		if (card.notes) box.createDiv({ text: card.notes, cls: "vocab-card-notes vocab-muted" });
+		this.renderMarkdown(box, answer, "vocab-card-answer");
+		if (card.example) this.renderMarkdown(box, card.example, "vocab-card-example");
+		if (card.notes) this.renderMarkdown(box, card.notes, "vocab-card-notes vocab-muted");
 
 		const p = card.progress[item.dir];
 		const btns = footer.createDiv({ cls: "vocab-ratings" });
@@ -420,6 +429,12 @@ export class DeckView extends TextFileView {
 			b.createDiv({ text: `${r.label} (${r.rating})` });
 			b.onclick = () => this.rate(r.rating);
 		}
+	}
+
+	/** Feldinhalt als Markdown rendern (inkl. HTML, Links und Bilder aus dem Vault). */
+	private renderMarkdown(parent: HTMLElement, text: string, cls: string) {
+		const el = parent.createDiv({ cls: cls + " vocab-md" });
+		MarkdownRenderer.render(this.app, text, el, this.file?.path ?? "", this);
 	}
 
 	private reveal() {

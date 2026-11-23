@@ -24,6 +24,7 @@ Eine `.deck`-Datei ist **reines JSON**. Jede Datei ist ein Stapel, jedes Objekt 
 | `example` | nein | Beispielsatz, wird nach dem Aufdecken gezeigt |
 | `notes` | nein | Freie Notiz |
 | `tags` | nein | Array von Strings |
+| `marked` | nein | `true` = markiert (Stern). Fehlt das Feld, ist die Karte nicht markiert |
 | `id`, `created`, `progress` | **nein – nicht selbst schreiben** | ergänzt das Plugin beim Öffnen |
 
 `directions`: `"forward"` (front → back), `"reverse"` (back → front) oder `"both"` = Standard-Abfragerichtung.

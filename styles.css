@@ -4,7 +4,7 @@
 /* Übersicht */
 .vocab-overview, .vocab-study { max-width: 720px; margin: 0 auto; }
 .vocab-header h2 { margin-bottom: 4px; }
-.vocab-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+.vocab-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; }
 .vocab-stat { background: var(--background-secondary); border-radius: 8px; padding: 10px; text-align: center; }
 .vocab-stat-num { font-size: 1.5em; font-weight: 600; }
 .vocab-stat-label { font-size: 0.85em; color: var(--text-muted); }
@@ -51,6 +51,12 @@
 .vocab-error pre { white-space: pre-wrap; color: var(--text-error); }
 
 @media (max-width: 500px) {
-  .vocab-stats { grid-template-columns: repeat(2, 1fr); }
+  .vocab-stats { grid-template-columns: repeat(3, 1fr); }
   .vocab-row-info { display: none; }
 }
+
+/* Markieren */
+.vocab-stat.is-marked .vocab-stat-num { color: var(--color-yellow); }
+.vocab-mark.is-marked, .vocab-mark-filter.is-active { color: var(--color-yellow); }
+.vocab-mark.is-marked svg { fill: currentColor; }
+.vocab-study-top > .vocab-muted { flex: 1; text-align: center; }

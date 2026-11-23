@@ -48,6 +48,7 @@ export class DeckView extends TextFileView {
 	private session: Session | null = null;
 	private studyDirection: DirectionSetting = "both";
 	private filter = "";
+	private onlyMarked = false;
 
 	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
@@ -194,6 +195,8 @@ export class DeckView extends TextFileView {
 		stat(fresh, "Neu", "is-new");
 		stat(due, "Fällig", "is-due");
 		stat(learned, "Später", "is-later");
+		const markedCount = deck.cards.filter((c) => c.marked).length;
+		stat(markedCount, "Markiert", "is-marked");
 
 		// Steuerung
 		const controls = wrap.createDiv({ cls: "vocab-controls" });
@@ -214,7 +217,11 @@ export class DeckView extends TextFileView {
 
 		const start = controls.createEl("button", { text: "Lernen starten", cls: "mod-cta" });
 		start.disabled = deck.cards.length === 0;
-		start.onclick = () => this.startSession();
+		start.onclick = () => this.startSession(false);
+
+		const startMarked = controls.createEl("button", { text: `Markierte lernen (${markedCount})` });
+		startMarked.disabled = markedCount === 0;
+		startMarked.onclick = () => this.startSession(true);
 
 		const add = controls.createEl("button", { text: "Karte hinzufügen" });
 		add.onclick = () => this.openCardModal();
@@ -228,6 +235,16 @@ export class DeckView extends TextFileView {
 			cls: "vocab-search",
 		});
 		search.value = this.filter;
+		const markedToggle = listHeader.createEl("button", {
+			cls: "clickable-icon vocab-mark-filter" + (this.onlyMarked ? " is-active" : ""),
+			attr: { "aria-label": "Nur markierte anzeigen" },
+		});
+		setIcon(markedToggle, "star");
+		markedToggle.onclick = () => {
+			this.onlyMarked = !this.onlyMarked;
+			markedToggle.toggleClass("is-active", this.onlyMarked);
+			renderList();
+		};
 
 		const list = wrap.createDiv({ cls: "vocab-list" });
 		const renderList = () => {
@@ -235,14 +252,15 @@ export class DeckView extends TextFileView {
 			const q = this.filter.toLowerCase();
 			const cards = deck.cards.filter(
 				(c) =>
-					!q ||
+					(!this.onlyMarked || c.marked) &&
+					(!q ||
 					c.front.toLowerCase().includes(q) ||
 					c.back.toLowerCase().includes(q) ||
-					(c.tags ?? []).some((t) => t.toLowerCase().includes(q)),
+					(c.tags ?? []).some((t) => t.toLowerCase().includes(q))),
 			);
 			if (cards.length === 0) {
 				list.createDiv({
-					text: deck.cards.length ? "Keine Treffer." : "Noch keine Karten. Füge welche hinzu oder lass die KI die Datei befüllen.",
+					text: deck.cards.length ? (this.onlyMarked && !q ? "Noch keine markierten Karten." : "Keine Treffer.") : "Noch keine Karten. Füge welche hinzu oder lass die KI die Datei befüllen.",
 					cls: "vocab-muted vocab-empty",
 				});
 				return;
@@ -274,6 +292,9 @@ export class DeckView extends TextFileView {
 			info.createDiv({ text: `${arrow} ${text}`, attr: { title: dueTooltip(p) } });
 		}
 		const actions = row.createDiv({ cls: "vocab-row-actions" });
+		this.markButton(actions, c, () => {
+			if (this.onlyMarked) this.render();
+		});
 		const edit = actions.createEl("button", { cls: "clickable-icon", attr: { "aria-label": "Bearbeiten" } });
 		setIcon(edit, "pencil");
 		edit.onclick = () => this.openCardModal(c);
@@ -288,17 +309,40 @@ export class DeckView extends TextFileView {
 		};
 	}
 
+	/** Stern-Button zum Markieren; `after` wird nach dem Umschalten aufgerufen. */
+	private markButton(parent: HTMLElement, c: Card, after?: () => void) {
+		const btn = parent.createEl("button", { cls: "clickable-icon vocab-mark" });
+		const update = () => {
+			btn.toggleClass("is-marked", !!c.marked);
+			btn.setAttr("aria-label", c.marked ? "Markierung entfernen (M)" : "Markieren (M)");
+		};
+		setIcon(btn, "star");
+		update();
+		btn.onclick = () => {
+			this.toggleMark(c);
+			update();
+			after?.();
+		};
+	}
+
+	private toggleMark(c: Card) {
+		if (c.marked) delete c.marked;
+		else c.marked = true;
+		this.persist();
+	}
+
 	private dirs(): Direction[] {
 		return this.studyDirection === "both" ? ["forward", "reverse"] : [this.studyDirection];
 	}
 
 	// ---- Lernrunde ----
 
-	private startSession() {
+	private startSession(onlyMarked: boolean) {
 		if (!this.deck) return;
 		// Version 1: alle Karten, ohne Timer-Filter. Später einfach nach isDue() filtern.
 		const queue: QueueItem[] = [];
-		for (const c of this.deck.cards) for (const dir of this.dirs()) queue.push({ cardId: c.id, dir });
+		const cards = onlyMarked ? this.deck.cards.filter((c) => c.marked) : this.deck.cards;
+		for (const c of cards) for (const dir of this.dirs()) queue.push({ cardId: c.id, dir });
 		shuffle(queue);
 		this.session = { queue, total: queue.length, done: 0, again: 0, revealed: false };
 		this.render();
@@ -352,6 +396,7 @@ export class DeckView extends TextFileView {
 		box.createDiv({ text: question, cls: "vocab-card-question" });
 
 		const footer = wrap.createDiv({ cls: "vocab-study-footer" });
+		this.markButton(top, card);
 		const editBtn = top.createEl("button", { cls: "clickable-icon", attr: { "aria-label": "Karte bearbeiten" } });
 		setIcon(editBtn, "pencil");
 		editBtn.onclick = () => this.openCardModal(card);
@@ -408,6 +453,16 @@ export class DeckView extends TextFileView {
 		if (!this.session) return;
 		const target = e.target as HTMLElement;
 		if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT") return;
+		if (e.key === "m" || e.key === "M") {
+			const item = this.session.queue[0];
+			const card = item && this.cardById(item.cardId);
+			if (card) {
+				e.preventDefault();
+				this.toggleMark(card);
+				this.render();
+			}
+			return;
+		}
 		if (!this.session.revealed && (e.key === " " || e.key === "Enter")) {
 			e.preventDefault();
 			this.reveal();

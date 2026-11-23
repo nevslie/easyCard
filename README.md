@@ -9,6 +9,8 @@ Obsidian-Plugin zum Vokabellernen, angelehnt an Anki. Jeder Stapel ist eine `.de
 - Karten über ein Formular hinzufügen („Speichern & nächste“ für schnelles Eintippen)
 - Lernen in Richtung EN→DE, DE→EN oder beides, jede Richtung mit eigenem Lernstand
 - Bewertung wie bei Anki: **Nochmal / Schwer / Gut / Einfach**, jeweils mit Anzeige, wann die Karte wiederkommt
+- Karten markieren (Stern, nur innerhalb des Stapels) und gezielt „Markierte lernen“
+- Tastatur: `Leertaste`/`Enter` = aufdecken, `1`–`4` = bewerten, `M` = markieren
 - Kartenfelder unterstützen Markdown und HTML (inkl. Bilder aus dem Vault), siehe Formatbeschreibung
 - Beim Bearbeiten einer Karte siehst du pro Richtung, in wie vielen Tagen sie wiederkommt, und kannst das mit −/+ ändern oder den Lernstand zurücksetzen
 - Tastatur: `Leertaste`/`Enter` = aufdecken, `1`–`4` = bewerten

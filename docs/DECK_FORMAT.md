@@ -24,7 +24,24 @@ Eine `.deck`-Datei ist **reines JSON**. Jede Datei ist ein Stapel, jedes Objekt 
 | `example` | nein | Beispielsatz, wird nach dem Aufdecken gezeigt |
 | `notes` | nein | Freie Notiz |
 | `tags` | nein | Array von Strings |
+| `marked` | nein | `true` = markiert (Stern). Fehlt das Feld, ist die Karte nicht markiert |
 | `id`, `created`, `progress` | **nein – nicht selbst schreiben** | ergänzt das Plugin beim Öffnen |
+
+### Markdown & HTML
+
+`front`, `back`, `example` und `notes` werden in der Lernansicht als **Obsidian-Markdown** gerendert. Damit geht alles, was auch in einer Notiz geht:
+
+- Formatierung: `**fett**`, `*kursiv*`, `==markiert==`, Listen, Tabellen, Code
+- HTML: `<span style="color: red">irregular</span>`, `<sub>`, `<br>` …
+- Bilder und Links aus dem Vault: `![[bild.png]]`, `[[Notiz]]`
+
+Im JSON gelten die normalen Regeln: Zeilenumbrüche als `\n`, Anführungszeichen als `\"`. Beispiel:
+
+```json
+{ "front": "to **go** – went – gone", "back": "gehen", "notes": "<span style=\"color: var(--color-red)\">unregelmäßig</span>\n\n- Präsens: go\n- Präteritum: went" }
+```
+
+In der Kartenliste der Übersicht wird der Text ungerendert angezeigt.
 
 `directions`: `"forward"` (front → back), `"reverse"` (back → front) oder `"both"` = Standard-Abfragerichtung.
 

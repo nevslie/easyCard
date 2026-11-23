@@ -32,6 +32,8 @@ export interface Card {
 	example?: string;
 	notes?: string;
 	tags?: string[];
+	/** Markiert ("Favorit") – nur innerhalb dieses Stapels, kann separat gelernt werden. */
+	marked?: boolean;
 	created: string;
 	progress: Record<Direction, Progress>;
 }
@@ -136,6 +138,8 @@ function normalizeCard(raw: any, usedIds: Set<string>): { card: Card; changed: b
 	if (raw.example) card.example = str(raw.example);
 	if (raw.notes) card.notes = str(raw.notes);
 	if (tags && tags.length) card.tags = tags;
+	if (raw.marked === true) card.marked = true;
+	else if (raw.marked !== undefined) changed = true;
 	return { card, changed };
 }
 

@@ -1,5 +1,6 @@
 import { App, Modal, Notice, Setting } from "obsidian";
-import { Card, Deck } from "./deck";
+import { Card, DIRECTIONS, Deck, Direction } from "./deck";
+import { daysUntilDue } from "./scheduler";
 
 export interface CardInput {
 	front: string;
@@ -7,6 +8,8 @@ export interface CardInput {
 	example?: string;
 	notes?: string;
 	tags?: string[];
+	/** Nur beim Bearbeiten: neue Fälligkeit in Tagen ab heute, null = als neu zurücksetzen. */
+	dueDays?: Partial<Record<Direction, number | null>>;
 }
 
 /** Formular zum Anlegen oder Bearbeiten einer Karte. */
@@ -62,6 +65,8 @@ export class CardModal extends Modal {
 			inputs.push(t.inputEl);
 		});
 
+		if (this.existing) this.renderDueSection(contentEl, this.existing);
+
 		const submit = (keepOpen: boolean) => {
 			if (!this.values.front.trim() || !this.values.back.trim()) {
 				new Notice("Vorder- und Rückseite dürfen nicht leer sein.");
@@ -87,6 +92,65 @@ export class CardModal extends Modal {
 				}
 			});
 		inputs[0]?.focus();
+	}
+
+	/** Pro Richtung anzeigen, in wie vielen Tagen die Karte wiederkommt, und das änderbar machen. */
+	private renderDueSection(el: HTMLElement, card: Card) {
+		el.createEl("h4", { text: "Wiederholung", cls: "vocab-due-heading" });
+		const due: Partial<Record<Direction, number | null>> = (this.values.dueDays = {});
+
+		for (const dir of DIRECTIONS) {
+			const label =
+				dir === "forward"
+					? `${this.deck.frontLabel} → ${this.deck.backLabel}`
+					: `${this.deck.backLabel} → ${this.deck.frontLabel}`;
+			const original = daysUntilDue(card.progress[dir]);
+			const current = (): number | null =>
+				due[dir] !== undefined ? (due[dir] as number | null) : original;
+
+			const setting = new Setting(el).setName(label);
+			let input: HTMLInputElement;
+			const update = () => {
+				const d = current();
+				input.value = d === null ? "" : String(d);
+				if (d === null) setting.setDesc("Neu – noch nie gelernt");
+				else {
+					const date = new Date();
+					date.setDate(date.getDate() + d);
+					const when = d === 0 ? "heute" : d === 1 ? "morgen" : `in ${d} Tagen`;
+					setting.setDesc(`Kommt ${when} wieder (${date.toLocaleDateString()})`);
+				}
+			};
+			const set = (d: number | null) => {
+				due[dir] = d === null ? null : Math.max(0, d);
+				update();
+			};
+
+			setting.addExtraButton((b) =>
+				b.setIcon("minus").setTooltip("1 Tag früher").onClick(() => set(Math.max(0, (current() ?? 1) - 1))),
+			);
+			setting.addText((t) => {
+				input = t.inputEl;
+				input.type = "number";
+				input.min = "0";
+				input.placeholder = "neu";
+				input.addClass("vocab-due-input");
+				t.onChange((v) => {
+					const n = parseInt(v, 10);
+					if (!isNaN(n)) {
+						due[dir] = Math.max(0, n);
+						update();
+					}
+				});
+			});
+			setting.addExtraButton((b) =>
+				b.setIcon("plus").setTooltip("1 Tag später").onClick(() => set((current() ?? 0) + 1)),
+			);
+			setting.addExtraButton((b) =>
+				b.setIcon("rotate-ccw").setTooltip("Lernstand zurücksetzen (wieder neu)").onClick(() => set(null)),
+			);
+			update();
+		}
 	}
 
 	onClose() {

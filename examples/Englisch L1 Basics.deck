@@ -1,0 +1,249 @@
+{
+  "name": "Englisch L1 – Basic Vocabs",
+  "description": "IT-Fachvokabular aus Vokabelblatt_Basics.pdf",
+  "frontLabel": "Englisch",
+  "backLabel": "Deutsch",
+  "directions": "both",
+  "cards": [
+    {
+      "front": "random-access memory (RAM)",
+      "back": "Arbeitsspeicher",
+      "example": "Adding more memory improves the computer's speed.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "hard drive / storage drive",
+      "back": "Festplatte",
+      "example": "Please save all project files on the external hard drive.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "motherboard / mainboard",
+      "back": "Hauptplatine",
+      "example": "The processor is mounted directly onto the motherboard.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "processor / central processing unit (CPU)",
+      "back": "Prozessor",
+      "example": "This new processor handles complex calculations much faster.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "interface",
+      "back": "Schnittstelle",
+      "example": "The program offers a simple interface for new users.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "peripheral device",
+      "back": "Peripheriegerät",
+      "example": "Keyboards, mice, and printers are common peripheral devices.",
+      "tags": [
+        "hardware"
+      ]
+    },
+    {
+      "front": "operating system (OS)",
+      "back": "Betriebssystem",
+      "example": "Which operating system is installed on the company laptops?",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "source code",
+      "back": "Quellcode",
+      "example": "The developers reviewed the source code to find the error.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "application",
+      "back": "Anwendung",
+      "example": "We are building a new web application for our clients.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "database",
+      "back": "Datenbank",
+      "example": "Customer records are stored securely in a central database.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "query",
+      "back": "Abfrage",
+      "example": "She wrote a database query to filter the sales figures.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "loop",
+      "back": "Schleife",
+      "example": "A loop repeats the same block of code until a condition is met.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "condition",
+      "back": "Bedingung",
+      "example": "The program checks a condition before executing the next step.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "error message",
+      "back": "Fehlermeldung",
+      "example": "Please take a screenshot of the error message for support.",
+      "tags": [
+        "software"
+      ]
+    },
+    {
+      "front": "network",
+      "back": "Netzwerk",
+      "example": "All office computers are connected to the local network.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "data packet",
+      "back": "Datenpaket",
+      "example": "Information travels across the internet in small data packets.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "transfer rate / bandwidth",
+      "back": "Übertragungsrate / Bandbreite",
+      "example": "A high transfer rate is required for smooth video calls.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "access right / permission",
+      "back": "Zugriffsrecht",
+      "example": "Only administrators have access rights to the server settings.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "network address / IP address",
+      "back": "Netzwerkadresse",
+      "example": "Every device on the network receives a unique network address.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "data throughput",
+      "back": "Datendurchsatz",
+      "example": "Upgrading the cables significantly increased our data throughput.",
+      "tags": [
+        "netzwerke"
+      ]
+    },
+    {
+      "front": "backup",
+      "back": "Datensicherung",
+      "example": "We run an automatic backup of all servers every night.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "encryption",
+      "back": "Verschlüsselung",
+      "example": "Strong encryption protects sensitive data from unauthorized access.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "malicious software / malware",
+      "back": "Schadprogramm",
+      "example": "Never open email attachments that might contain malicious software.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "vulnerability",
+      "back": "Schwachstelle",
+      "example": "The security update fixes a critical vulnerability in the system.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "credentials / login details",
+      "back": "Zugangsdaten",
+      "example": "Keep your login details secret and never write them down.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "data privacy / data protection",
+      "back": "Datenschutz",
+      "example": "Strict data protection laws apply to all customer information.",
+      "tags": [
+        "sicherheit"
+      ]
+    },
+    {
+      "front": "requirement specification",
+      "back": "Lastenheft",
+      "example": "The client defined all wishes in the requirement specification.",
+      "tags": [
+        "projektmanagement"
+      ]
+    },
+    {
+      "front": "functional specification",
+      "back": "Pflichtenheft",
+      "example": "Our team created the functional specification to plan the steps.",
+      "tags": [
+        "projektmanagement"
+      ]
+    },
+    {
+      "front": "interface documentation",
+      "back": "Schnittstellenbeschreibung",
+      "example": "Read the interface documentation to connect both systems properly.",
+      "tags": [
+        "projektmanagement"
+      ]
+    },
+    {
+      "front": "maintenance",
+      "back": "Wartung",
+      "example": "The server will be offline tonight due to scheduled maintenance.",
+      "tags": [
+        "projektmanagement"
+      ]
+    }
+  ]
+}
